@@ -84,7 +84,6 @@
   white-space: nowrap;
   flex-shrink: 0;
 }
-
 .tax-toogle label {
   font-size: 0.8rem;
   font-weight: 600;
@@ -92,16 +91,60 @@
   cursor: pointer;
   margin-bottom: 0;
 }
-
 .tax-toogle .form-check-input {
   width: 2.2em;
   height: 1.2em;
   cursor: pointer;
 }
-
 .tax-toogle .form-check-input:checked {
   background-color: #222;
   border-color: #222;
+}
+
+/* ✅ Mobile fix */
+@media (max-width: 768px) {
+  #filters-container {
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  #scrollLeft {
+    order: 0;
+  }
+
+  #filters-wrapper {
+    order: 1;
+    flex: 1;
+  }
+
+  #scrollRight {
+    order: 2;
+  }
+
+  .tax-toogle {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    padding: 0.4rem 0.6rem;
+    margin-top: 0.3rem;
+  }
+
+  .tax-toogle label {
+    font-size: 0.72rem;
+  }
+
+  .tax-toogle .form-check-input {
+    width: 1.8em;
+    height: 1em;
+  }
+
+  .filter p {
+    font-size: 0.7rem;
+  }
+
+  .filter {
+    min-width: 50px;
+  }
 }
 </style>
 
