@@ -1,0 +1,141 @@
+<style>
+.search-btn{
+  background-color: #fe424d ;
+  color: #fff;
+  border-radius: 25px;
+  padding: 0 1rem 0 1rem;
+}
+.search-btn:hover{
+  background-color: #fe424d ;
+  color: #fff;
+}
+.search-btn i{
+  display: inline;
+  margin-right: 0.5rem;
+}
+.search-inp{
+  border-radius: 25px;
+  padding: 0.5rem 3rem 0.5rem 3rem;
+  font-size: 1rem;
+}
+.suggestions-box {
+  position: absolute;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 9999;
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  top: 110%;
+  left: 0;
+}
+.suggestion-item {
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.suggestion-item:hover {
+  background-color: #f5f5f5;
+  border-radius: 12px;
+}
+.search-wrapper {
+  position: relative;
+}
+</style>
+
+<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" href="/listings">Explore</a>
+      </div>
+      <div class="navbar-nav ms-auto">
+        <form class="d-flex" role="search" action="/listings" method="GET">
+          <div class="search-wrapper">
+            <input
+              class="form-control me-2 search-inp"
+              type="search"
+              name="search"
+              id="searchInput"
+              placeholder="Search Destinations"
+              autocomplete="off"
+            />
+            <div class="suggestions-box" id="suggestionsBox" style="display:none;"></div>
+          </div>
+          <button class="btn search-btn" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>Search
+          </button>
+        </form>
+      </div>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link" href="/listings/new">Nestique your home</a>
+        <% if(!currUser){ %>
+        <a class="nav-link" href="/signup"><b>Sign up</b></a>
+        <a class="nav-link" href="/login"><b>Log in</b></a>
+        <% } %>
+        <% if(currUser){ %>
+        <a class="nav-link" href="/logout"><b>Log out</b></a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const searchInput = document.getElementById("searchInput");
+  const suggestionsBox = document.getElementById("suggestionsBox");
+
+  searchInput.addEventListener("input", async () => {
+    const query = searchInput.value.trim();
+
+    if (query.length < 1) {
+      suggestionsBox.style.display = "none";
+      return;
+    }
+
+    try {
+      const res = await fetch(`/listings/search-suggestions?q=${query}`);
+      const suggestions = await res.json();
+
+      if (suggestions.length === 0) {
+        suggestionsBox.style.display = "none";
+        return;
+      }
+
+      suggestionsBox.innerHTML = suggestions.map(s => `
+        <div class="suggestion-item" onclick="window.location='/listings/${s.id}'">
+          <i class="fa-solid fa-location-dot" style="color:#fe424d; font-size:14px;"></i>
+          <div>
+            <div style="font-weight:500; font-size:0.9rem;">${s.title}</div>
+            <div style="font-size:0.75rem; color:gray;">${s.location}</div>
+          </div>
+        </div>
+      `).join("");
+
+      suggestionsBox.style.display = "block";
+    } catch (err) {
+      console.error(err);
+    }
+  });
+
+  // Hide suggestions when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!searchInput.contains(e.target)) {
+      suggestionsBox.style.display = "none";
+    }
+  });
+</script>
