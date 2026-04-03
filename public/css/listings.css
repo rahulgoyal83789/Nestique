@@ -1,0 +1,163 @@
+/* Filters Container */
+#filters-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+.filter-btn {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  font-size: 0.8rem;
+}
+
+.filter-btn:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+#filters-wrapper {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+}
+
+#filters-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 100%;
+  background: linear-gradient(to right, transparent, white);
+  pointer-events: none;
+}
+
+#filters {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 1.5rem;
+  scrollbar-width: none;
+  padding-bottom: 0.5rem;
+  scroll-behavior: smooth;
+}
+
+#filters::-webkit-scrollbar {
+  display: none;
+}
+
+.filter {
+  text-align: center;
+  margin-top: 1rem;
+  opacity: 0.7;
+  text-decoration: none;
+  color: inherit;
+  flex-shrink: 0;
+  min-width: 60px;
+  padding-bottom: 0.5rem;
+}
+
+.filter:hover,
+.filter.active {
+  opacity: 1;
+  cursor: pointer;
+  border-bottom: 2px solid black;
+}
+
+.filter p {
+  font-size: 0.8rem;
+  margin-bottom: 0;
+}
+
+/* Tax Info */
+.tax-info {
+  display: none;
+}
+
+.tax-toogle {
+  border: 0.5px solid #ddd;
+  border-radius: 2rem;
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  background: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.tax-toogle label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.tax-toogle .form-check-input {
+  width: 2.2em;
+  height: 1.2em;
+  cursor: pointer;
+}
+
+.tax-toogle .form-check-input:checked {
+  background-color: #222;
+  border-color: #222;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  #filters-container {
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  #scrollLeft {
+    order: 0;
+  }
+
+  #filters-wrapper {
+    order: 1;
+    flex: 1;
+  }
+
+  #scrollRight {
+    order: 2;
+  }
+
+  .tax-toogle {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    padding: 0.4rem 0.6rem;
+    margin-top: 0.3rem;
+  }
+
+  .tax-toogle label {
+    font-size: 0.72rem;
+  }
+
+  .tax-toogle .form-check-input {
+    width: 1.8em;
+    height: 1em;
+  }
+
+  .filter p {
+    font-size: 0.7rem;
+  }
+
+  .filter {
+    min-width: 50px;
+  }
+}

@@ -1,43 +1,7 @@
 <% layout("/layouts/boilerplate.ejs") -%>
-<style>
-@media (max-width: 768px) {
-  .col-8.offset-3,
-  .col-6.offset-3,
-  .card.col-6.offset-3 {
-    width: 100% !important;
-    margin-left: 0 !important;
-    offset: 0 !important;
-  }
-
-  .btns {
-    display: flex;
-    gap: 0.5rem;
-    padding: 0 0.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .btns a,
-  .btns form,
-  .btns button {
-    width: auto !important;
-    margin: 0 !important;
-    offset: 0 !important;
-  }
-
-  .review-card {
-    width: 100% !important;
-    margin-left: 0 !important;
-  }
-}
-
-#map {
-  height: 350px;
-  width: 100%;
-  border-radius: 12px;
-}
-</style>
 
 <script>
+  // Map configuration - keep this here as it uses server-side data
   const mapTocken = "<%= process.env.MAP_TOCKEN %>";
   const listing = <%- JSON.stringify(listing) %>;
 </script>
