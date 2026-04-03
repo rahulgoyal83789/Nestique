@@ -15,7 +15,7 @@
 }
 .search-inp{
   border-radius: 25px;
-  padding: 0.5rem 3rem 0.5rem 3rem;
+  padding: 0.5rem 1rem;
   font-size: 1rem;
 }
 .suggestions-box {
@@ -45,6 +45,45 @@
 }
 .search-wrapper {
   position: relative;
+  width: 100%;
+}
+
+/* ✅ Mobile fix */
+@media (max-width: 768px) {
+  .navbar-collapse {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 9998;
+  }
+
+  .navbar-nav {
+    width: 100%;
+  }
+
+  .navbar-nav.ms-auto {
+    margin-left: 0 !important;
+  }
+
+  .d-flex {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .search-btn {
+    width: 100%;
+    padding: 0.5rem;
+  }
+
+  .search-inp {
+    width: 100%;
+  }
 }
 </style>
 
@@ -132,7 +171,6 @@
     }
   });
 
-  // Hide suggestions when clicking outside
   document.addEventListener("click", (e) => {
     if (!searchInput.contains(e.target)) {
       suggestionsBox.style.display = "none";
