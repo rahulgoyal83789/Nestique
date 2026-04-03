@@ -4,7 +4,7 @@ const initData = require("./data.js");
 const Listing = require("../models/listing");
 const maptilerClient = require("@maptiler/client");
 
-maptilerClient.config.apiKey = process.env.MAP_TOKEN;
+maptilerClient.config.apiKey = process.env.MAP_TOCKEN;
 
 // MongoDb connection
 const dbUrl = process.env.ATLASDB_URL;
@@ -29,7 +29,7 @@ const initDB = async () => {
             limit: 1
         });
         obj.geometry = response.features[0].geometry;
-        obj.owner = "69cb9a2ec19d41c859269db3";
+        obj.owner = "69cf6771fdd043c2643bb08c";
     }
 
     await Listing.insertMany(initData.data);
