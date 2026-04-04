@@ -91,6 +91,8 @@ body{
 }
 .btns{
     display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 .show-card{
     padding-left: 0;
