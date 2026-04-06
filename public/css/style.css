@@ -109,8 +109,11 @@ body{
     text-decoration: none;
 }
 
+.f-info-socials .fa-square-x-twitter {
+    color: #1a1a1a;  
+}
 .f-info-socials .fa-square-github {
-    color: black;  /* Facebook blue */
+    color: #181717;  
 }
 
 .f-info-socials .fa-square-instagram {
