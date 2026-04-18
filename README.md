@@ -6,6 +6,17 @@ An Airbnb-inspired full stack web application where users can discover, create, 
 
 ---
 
+## Screenshots
+
+![Listings Page](screenshots/Screenshot%202026-04-18%20194713.png)
+![Listing Detail](screenshots/Screenshot%202026-04-18%20194818.png)
+![Map View](screenshots/Screenshot%202026-04-18%20194828.png)
+![Create Listing](screenshots/Screenshot%202026-04-18%20194849.png)
+![Review Section](screenshots/Screenshot%202026-04-18%20194858.png)
+![Login Page](screenshots/Screenshot%202026-04-18%20194935.png)
+
+---
+
 ## Features
 
 - 🔐 **User Authentication** — Secure signup, login and logout using Passport.js
@@ -78,7 +89,13 @@ npm install
 
 ### Environment Variables
 
-Create a `.env` file in the root directory:
+Copy the example file and fill in your values:
+
+```bash
+cp .env.example .env
+```
+
+Then edit `.env` with your actual credentials:
 
 ```env
 ATLASDB_URL=your_mongodb_atlas_connection_string
