@@ -112,9 +112,6 @@ body{
 .f-info-socials .fa-square-x-twitter {
     color: #1a1a1a;  
 }
-.f-info-socials .fa-square-github {
-    color: #181717;  
-}
 
 .f-info-socials .fa-square-instagram {
     color: #E1306C;  /* Instagram pink */
@@ -142,4 +139,48 @@ body{
 
 .f-info-links a:hover {
     text-decoration: underline;
+}
+
+/* Pagination Styling */
+.pagination {
+  gap: 0.25rem;
+}
+
+.pagination .page-link {
+  border-radius: 0.5rem;
+  border: 1px solid #dee2e6;
+  color: #333;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.pagination .page-link:hover {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+  color: #000;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #fe424d;
+  border-color: #fe424d;
+  color: white;
+  font-weight: 600;
+}
+
+.pagination .page-item.disabled .page-link {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Responsive pagination on mobile */
+@media (max-width: 576px) {
+  .pagination {
+    font-size: 0.875rem;
+  }
+  
+  .pagination .page-link {
+    padding: 0.375rem 0.5rem;
+  }
 }

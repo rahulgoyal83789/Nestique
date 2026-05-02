@@ -1,27 +1,56 @@
 const Listing = require("../models/listing.js");
 const maptilerClient = require('@maptiler/client');
-const mapToken = process.env.MAP_TOCKEN;
+const { cloudinary } = require("../cloudConfig.js"); 
+const mapToken = process.env.MAP_TOKEN;
 maptilerClient.config.apiKey = mapToken;
 
 module.exports.index = async (req, res) => {
-    const { category, search } = req.query;
-    let allListings;
+    const { category, search, minPrice, maxPrice } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const limit = 12;
+    const skip = (page - 1) * limit;
+    let query = {};
 
     if (search) {
-        allListings = await Listing.find({
+        const sanitizedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        query = {
             $or: [
-                { title: { $regex: search, $options: "i" } },
-                { location: { $regex: search, $options: "i" } },
-                { country: { $regex: search, $options: "i" } },
+                { title: { $regex: sanitizedSearch, $options: "i" } },
+                { location: { $regex: sanitizedSearch, $options: "i" } },
+                { country: { $regex: sanitizedSearch, $options: "i" } },
             ]
-        });
+        };
     } else if (category) {
-        allListings = await Listing.find({ category: category });
-    } else {
-        allListings = await Listing.find({});
+        query = { category: category };
     }
 
-    res.render("listings/index.ejs", { allListings, currCategory: category });
+    // ✅ Price range filter — validate parseInt to guard against NaN from bad input
+    const parsedMin = parseInt(minPrice);
+    const parsedMax = parseInt(maxPrice);
+    if (!isNaN(parsedMin) || !isNaN(parsedMax)) {
+        query.price = {};
+        if (!isNaN(parsedMin) && parsedMin >= 0) query.price.$gte = parsedMin;
+        if (!isNaN(parsedMax) && parsedMax >= 0) query.price.$lte = parsedMax;
+    }
+
+    const totalListings = await Listing.countDocuments(query);
+    const totalPages = Math.ceil(totalListings / limit);
+    const allListings = await Listing.find(query)
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: -1 });
+
+    res.render("listings/index.ejs", { 
+        allListings, 
+        currCategory: category,
+        currentPage: page,
+        totalPages,
+        totalListings,
+        limit,
+        searchQuery: search || '',
+        minPrice: minPrice || '',
+        maxPrice: maxPrice || ''
+    });
 };
 
 module.exports.renderNewForm = (req, res) => {
@@ -30,7 +59,9 @@ module.exports.renderNewForm = (req, res) => {
 
 module.exports.showListing = async (req, res) => {
     let { id } = req.params;
-    const listing = await Listing.findById(id).populate({ path: "reviews", populate: { path: "author" } }).populate("owner");
+    const listing = await Listing.findById(id)
+        .populate({ path: "reviews", populate: { path: "author" } })
+        .populate("owner");
     if (!listing) {
         req.flash("error", "Listing you requested for doesn't exists!");
         return res.redirect("/listings");
@@ -69,21 +100,28 @@ module.exports.renderEditForm = async (req, res) => {
 module.exports.updateListing = async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-    
-    // ✅ Re-geocode the new location
-    let response = await maptilerClient.geocoding.forward(
-        req.body.listing.location,
-        { limit: 1 }
-    );
-    listing.geometry = response.features[0].geometry;
+
+    const existingLocation = listing.location;
+    if (req.body.listing.location !== existingLocation) {
+        let response = await maptilerClient.geocoding.forward(
+            req.body.listing.location,
+            { limit: 1 }
+        );
+        listing.geometry = response.features[0].geometry;
+    }
+
     listing.category = req.body.listing.category;
-    
+
     if (typeof req.file !== "undefined") {
+        // ✅ Delete old image from Cloudinary before uploading new one
+        if (listing.image && listing.image.filename) {
+            await cloudinary.uploader.destroy(listing.image.filename);
+        }
         let url = req.file.path;
         let filename = req.file.filename;
         listing.image = { url, filename };
     }
-    
+
     await listing.save();
     req.flash("success", "Listing Updated!");
     res.redirect(`/listings/${id}`);
@@ -92,18 +130,26 @@ module.exports.updateListing = async (req, res) => {
 module.exports.destroyListing = async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
-    console.log(deletedListing);
+
+    // ✅ Delete image from Cloudinary after listing is deleted
+    if (deletedListing && deletedListing.image && deletedListing.image.filename) {
+        await cloudinary.uploader.destroy(deletedListing.image.filename);
+    }
+
     req.flash("success", "Listing Deleted!");
     res.redirect("/listings");
 };
 
 module.exports.searchSuggestions = async (req, res) => {
     const { q } = req.query;
+    if (!q || q.trim() === '') return res.json([]);
+    const sanitizedQuery = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
     const listings = await Listing.find({
         $or: [
-            { title: { $regex: q, $options: "i" } },
-            { location: { $regex: q, $options: "i" } },
-            { country: { $regex: q, $options: "i" } },
+            { title: { $regex: sanitizedQuery, $options: "i" } },
+            { location: { $regex: sanitizedQuery, $options: "i" } },
+            { country: { $regex: sanitizedQuery, $options: "i" } },
         ]
     }).limit(5);
 

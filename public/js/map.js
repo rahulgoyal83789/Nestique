@@ -1,4 +1,4 @@
-maptilersdk.config.apiKey = mapTocken; // Your Maptiler key
+maptilersdk.config.apiKey = mapToken; // Your Maptiler key
 
 const map = new maptilersdk.Map({
   container: "map",

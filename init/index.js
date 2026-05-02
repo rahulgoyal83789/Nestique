@@ -4,7 +4,7 @@ const initData = require("./data.js");
 const Listing = require("../models/listing");
 const maptilerClient = require("@maptiler/client");
 
-maptilerClient.config.apiKey = process.env.MAP_TOCKEN;
+maptilerClient.config.apiKey = process.env.MAP_TOKEN;
 
 // MongoDb connection
 const dbUrl = process.env.ATLASDB_URL;

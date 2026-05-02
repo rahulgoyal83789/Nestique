@@ -1,70 +1,69 @@
 <% layout("/layouts/boilerplate.ejs") -%>
 
-<body>
-  <div id="filters-container">
+<div id="filters-container">
     <button class="filter-btn" id="scrollLeft">
       <i class="fa-solid fa-chevron-left"></i>
     </button>
 
     <div id="filters-wrapper">
       <div id="filters">
-        <a href="/listings" class="filter <%= !currCategory ? 'active' : '' %>">
+        <a href="/listings?page=1" class="filter <%= !currCategory ? 'active' : '' %>">
           <div><i class="fa-solid fa-fire"></i></div>
           <p>Trending</p>
         </a>
-        <a href="/listings?category=rooms" class="filter <%= currCategory === 'rooms' ? 'active' : '' %>">
+        <a href="/listings?category=rooms&page=1" class="filter <%= currCategory === 'rooms' ? 'active' : '' %>">
           <div><i class="fa-solid fa-bed"></i></div>
           <p>Rooms</p>
         </a>
-        <a href="/listings?category=iconic cities" class="filter <%= currCategory === 'iconic cities' ? 'active' : '' %>">
+        <a href="/listings?category=iconic cities&page=1" class="filter <%= currCategory === 'iconic cities' ? 'active' : '' %>">
           <div><i class="fa-solid fa-mountain-city"></i></div>
           <p>Iconic Cities</p>
         </a>
-        <a href="/listings?category=mountains" class="filter <%= currCategory === 'mountains' ? 'active' : '' %>">
+        <a href="/listings?category=mountains&page=1" class="filter <%= currCategory === 'mountains' ? 'active' : '' %>">
           <div><i class="fa-solid fa-mountain"></i></div>
           <p>Mountains</p>
         </a>
-        <a href="/listings?category=castles" class="filter <%= currCategory === 'castles' ? 'active' : '' %>">
+        <a href="/listings?category=castles&page=1" class="filter <%= currCategory === 'castles' ? 'active' : '' %>">
           <div><i class="fa-brands fa-fort-awesome"></i></div>
           <p>Castles</p>
         </a>
-        <a href="/listings?category=amazing pools" class="filter <%= currCategory === 'amazing pools' ? 'active' : '' %>">
+        <a href="/listings?category=amazing pools&page=1" class="filter <%= currCategory === 'amazing pools' ? 'active' : '' %>">
           <div><i class="fa-solid fa-person-swimming"></i></div>
           <p>Amazing Pools</p>
         </a>
-        <a href="/listings?category=camping" class="filter <%= currCategory === 'camping' ? 'active' : '' %>">
+        <a href="/listings?category=camping&page=1" class="filter <%= currCategory === 'camping' ? 'active' : '' %>">
           <div><i class="fa-solid fa-campground"></i></div>
           <p>Camping</p>
         </a>
-        <a href="/listings?category=farms" class="filter <%= currCategory === 'farms' ? 'active' : '' %>">
+        <a href="/listings?category=farms&page=1" class="filter <%= currCategory === 'farms' ? 'active' : '' %>">
           <div><i class="fa-solid fa-cow"></i></div>
           <p>Farms</p>
         </a>
-        <a href="/listings?category=arctic" class="filter <%= currCategory === 'arctic' ? 'active' : '' %>">
+        <a href="/listings?category=arctic&page=1" class="filter <%= currCategory === 'arctic' ? 'active' : '' %>">
           <div><i class="fa-regular fa-snowflake"></i></div>
           <p>Arctic</p>
         </a>
-        <a href="/listings?category=beachfront" class="filter <%= currCategory === 'beachfront' ? 'active' : '' %>">
+        <a href="/listings?category=beachfront&page=1" class="filter <%= currCategory === 'beachfront' ? 'active' : '' %>">
           <div><i class="fa-solid fa-umbrella-beach"></i></div>
           <p>Beachfront</p>
         </a>
-        <a href="/listings?category=boats" class="filter <%= currCategory === 'boats' ? 'active' : '' %>">
+        <a href="/listings?category=boats&page=1" class="filter <%= currCategory === 'boats' ? 'active' : '' %>">
           <div><i class="fa-solid fa-sailboat"></i></div>
           <p>Boats</p>
         </a>
-        <a href="/listings?category=city" class="filter <%= currCategory === 'city' ? 'active' : '' %>">
+        <a href="/listings?category=city&page=1" class="filter <%= currCategory === 'city' ? 'active' : '' %>">
           <div><i class="fa-solid fa-building"></i></div>
           <p>City</p>
         </a>
-        <a href="/listings?category=luxury" class="filter <%= currCategory === 'luxury' ? 'active' : '' %>">
+        <a href="/listings?category=luxury&page=1" class="filter <%= currCategory === 'luxury' ? 'active' : '' %>">
           <div><i class="fa-regular fa-gem"></i></div>
           <p>Luxury</p>
         </a>
-        <a href="/listings?category=wine yards" class="filter <%= currCategory === 'wine yards' ? 'active' : '' %>">
+        <a href="/listings?category=wine yards&page=1" class="filter <%= currCategory === 'wine yards' ? 'active' : '' %>">
           <div><i class="fa-solid fa-wine-glass"></i></div>
           <p>Wine Yards</p>
         </a>
-        <a href="/listings?category=treehouse" class="filter <%= currCategory === 'treehouse' ? 'active' : '' %>">
+        <a href="/listings?category=treehouse&page=1" class="filter <%= currCategory === 'treehouse' ? 'active' : '' %>">
           <div><i class="fa-solid fa-tree"></i></div>
           <p>Treehouse</p>
         </a>
@@ -74,7 +73,53 @@
     <button class="filter-btn" id="scrollRight">
       <i class="fa-solid fa-chevron-right"></i>
     </button>
-    <div class="tax-toogle">
+
+    <div class="tax-toogle d-flex align-items-center gap-3">
+
+      <!-- ✅ Price Filter Dropdown -->
+      <div class="dropdown">
+        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
+                id="priceFilterBtn" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                aria-expanded="false">
+          <i class="fa-solid fa-indian-rupee-sign"></i> Price
+          <% if (minPrice || maxPrice) { %>
+            <span class="badge bg-danger ms-1">✓</span>
+          <% } %>
+        </button>
+        <div class="dropdown-menu p-3" style="min-width: 220px;" aria-labelledby="priceFilterBtn">
+          <form action="/listings" method="GET">
+            <!-- Preserve existing filters -->
+            <% if (currCategory) { %>
+              <input type="hidden" name="category" value="<%= currCategory %>">
+            <% } %>
+            <% if (searchQuery) { %>
+              <input type="hidden" name="search" value="<%= searchQuery %>">
+            <% } %>
+            <input type="hidden" name="page" value="1">
+
+            <label class="form-label fw-semibold mb-2">Price per night (₹)</label>
+            <div class="d-flex gap-2 mb-3">
+              <div>
+                <label class="form-label small text-muted">Min</label>
+                <input type="number" class="form-control form-control-sm" name="minPrice"
+                       placeholder="0" value="<%= minPrice %>" min="0">
+              </div>
+              <div>
+                <label class="form-label small text-muted">Max</label>
+                <input type="number" class="form-control form-control-sm" name="maxPrice"
+                       placeholder="Any" value="<%= maxPrice %>" min="0">
+              </div>
+            </div>
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-danger btn-sm w-100">Apply</button>
+              <a href="/listings?<%= [currCategory ? 'category=' + encodeURIComponent(currCategory) : '', searchQuery ? 'search=' + encodeURIComponent(searchQuery) : '', 'page=1'].filter(Boolean).join('&') %>"
+                 class="btn btn-outline-secondary btn-sm w-100">Clear</a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Existing tax toggle -->
       <div class="form-check-reverse form-switch">
         <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
         <label class="form-check-label" for="switchCheckDefault"><b>Display total after taxes</b></label>
@@ -82,21 +127,120 @@
     </div>
   </div>
 
-  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
-    <% for(let listing of allListings){ %>
-    <a href="/listings/<%= listing._id %>" class="listing-link">
-      <div class="card col listing-card">
-        <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image" style="height: 20rem"/>
-        <div class="card-img-overlay"></div>
-        <div class="card-body">
-          <p class="card-text">
-            <b><%= listing.title %></b> <br />
-            &#8377; <%= listing.price.toLocaleString("en-IN")%> / night
-            <i class="tax-info">&nbsp;&nbsp;+ 18% GST</i>
-          </p>
-        </div>
+  <!-- Listings Grid -->
+  <% if (allListings.length === 0) { %>
+    <div class="text-center py-5 w-100">
+      <div class="d-flex justify-content-center mb-3">
+        <i class="fa-solid fa-magnifying-glass fa-3x text-muted"></i>
       </div>
-    </a>
-    <% } %>
-  </div>
-</body>
+      <h4 class="text-muted">No listings found</h4>
+      <p class="text-muted">Try a different category or search term</p>
+    </div>
+  <% } else { %>
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+      <% for(let listing of allListings){ %>
+      <a href="/listings/<%= listing._id %>" class="listing-link">
+        <div class="card col listing-card">
+          <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image" style="height: 20rem"/>
+          <div class="card-img-overlay"></div>
+          <div class="card-body">
+            <p class="card-text">
+              <b><%= listing.title %></b> <br />
+              &#8377; <%= listing.price.toLocaleString("en-IN")%> / night
+              <i class="tax-info">&nbsp;&nbsp;+ 18% GST</i>
+            </p>
+          </div>
+        </div>
+      </a>
+      <% } %>
+    </div>
+  <% } %>
+
+  <!-- Pagination -->
+  <% if (totalPages > 1) { %>
+  <nav aria-label="Listings pagination" class="mt-5 mb-4">
+    <ul class="pagination justify-content-center">
+      <!-- Previous Button -->
+      <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+        <a class="page-link" 
+           href="?page=<%= currentPage - 1 %><%= currCategory ? '&category=' + encodeURIComponent(currCategory) : '' %><%= searchQuery ? '&search=' + encodeURIComponent(searchQuery) : '' %><%= minPrice ? '&minPrice=' + minPrice : '' %><%= maxPrice ? '&maxPrice=' + maxPrice : '' %>"
+           aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+
+      <% 
+      const maxVisible = 5;
+      let startPage = Math.max(1, currentPage - 2);
+      let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+      
+      if (endPage - startPage < maxVisible - 1) {
+        startPage = Math.max(1, endPage - maxVisible + 1);
+      }
+      %>
+
+      <!-- First page + ellipsis -->
+      <% if (startPage > 1) { %>
+        <li class="page-item">
+          <a class="page-link" 
+             href="?page=1<%= currCategory ? '&category=' + encodeURIComponent(currCategory) : '' %><%= searchQuery ? '&search=' + encodeURIComponent(searchQuery) : '' %><%= minPrice ? '&minPrice=' + minPrice : '' %><%= maxPrice ? '&maxPrice=' + maxPrice : '' %>">
+            1
+          </a>
+        </li>
+        <% if (startPage > 2) { %>
+          <li class="page-item disabled">
+            <span class="page-link">...</span>
+          </li>
+        <% } %>
+      <% } %>
+
+      <!-- Visible page numbers -->
+      <% for (let i = startPage; i <= endPage; i++) { %>
+        <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+          <a class="page-link" 
+             href="?page=<%= i %><%= currCategory ? '&category=' + encodeURIComponent(currCategory) : '' %><%= searchQuery ? '&search=' + encodeURIComponent(searchQuery) : '' %><%= minPrice ? '&minPrice=' + minPrice : '' %><%= maxPrice ? '&maxPrice=' + maxPrice : '' %>">
+            <%= i %>
+          </a>
+        </li>
+      <% } %>
+
+      <!-- Ellipsis + last page -->
+      <% if (endPage < totalPages) { %>
+        <% if (endPage < totalPages - 1) { %>
+          <li class="page-item disabled">
+            <span class="page-link">...</span>
+          </li>
+        <% } %>
+        <li class="page-item">
+          <a class="page-link" 
+             href="?page=<%= totalPages %><%= currCategory ? '&category=' + encodeURIComponent(currCategory) : '' %><%= searchQuery ? '&search=' + encodeURIComponent(searchQuery) : '' %><%= minPrice ? '&minPrice=' + minPrice : '' %><%= maxPrice ? '&maxPrice=' + maxPrice : '' %>">
+            <%= totalPages %>
+          </a>
+        </li>
+      <% } %>
+
+      <!-- Next Button -->
+      <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+        <a class="page-link" 
+           href="?page=<%= currentPage + 1 %><%= currCategory ? '&category=' + encodeURIComponent(currCategory) : '' %><%= searchQuery ? '&search=' + encodeURIComponent(searchQuery) : '' %><%= minPrice ? '&minPrice=' + minPrice : '' %><%= maxPrice ? '&maxPrice=' + maxPrice : '' %>"
+           aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Results counter -->
+    <p class="text-center text-muted mt-3">
+      <% if (totalListings > 0) { %>
+        Showing <%= ((currentPage - 1) * limit) + 1 %>-<%= Math.min(currentPage * limit, totalListings) %> 
+        of <%= totalListings %> 
+        <%= currCategory ? currCategory.charAt(0).toUpperCase() + currCategory.slice(1) : 'Trending' %> listings
+        <% if (minPrice || maxPrice) { %>
+          <span class="badge bg-danger ms-2">
+            ₹<%= minPrice || '0' %> – ₹<%= maxPrice || '∞' %>
+          </span>
+        <% } %>
+      <% } %>
+    </p>
+  </nav>
+  <% } %>
