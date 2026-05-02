@@ -1,5 +1,24 @@
 <% layout("/layouts/boilerplate.ejs") -%>
 
+<!-- Mobile-only search bar -->
+<div class="mobile-search-bar d-md-none">
+  <form class="d-flex align-items-center gap-2" role="search" action="/listings" method="GET">
+    <div class="search-wrapper flex-grow-1">
+      <input
+        class="form-control search-inp"
+        type="search"
+        name="search"
+        placeholder="Search Destinations"
+        autocomplete="off"
+        value="<%= searchQuery %>"
+      />
+    </div>
+    <button class="btn search-btn px-3" type="submit">
+      <i class="fa-solid fa-magnifying-glass"></i> &nbsp; Search
+    </button>
+  </form>
+</div>
+
 <div id="filters-container">
     <button class="filter-btn" id="scrollLeft">
       <i class="fa-solid fa-chevron-left"></i>
@@ -7,63 +26,63 @@
 
     <div id="filters-wrapper">
       <div id="filters">
-        <a href="/listings?page=1" class="filter <%= !currCategory ? 'active' : '' %>">
+        <a href="/listings" class="filter <%= !currCategory ? 'active' : '' %>">
           <div><i class="fa-solid fa-fire"></i></div>
           <p>Trending</p>
         </a>
-        <a href="/listings?category=rooms&page=1" class="filter <%= currCategory === 'rooms' ? 'active' : '' %>">
+        <a href="/listings?category=rooms" class="filter <%= currCategory === 'rooms' ? 'active' : '' %>">
           <div><i class="fa-solid fa-bed"></i></div>
           <p>Rooms</p>
         </a>
-        <a href="/listings?category=iconic cities&page=1" class="filter <%= currCategory === 'iconic cities' ? 'active' : '' %>">
+        <a href="/listings?category=iconic cities" class="filter <%= currCategory === 'iconic cities' ? 'active' : '' %>">
           <div><i class="fa-solid fa-mountain-city"></i></div>
           <p>Iconic Cities</p>
         </a>
-        <a href="/listings?category=mountains&page=1" class="filter <%= currCategory === 'mountains' ? 'active' : '' %>">
+        <a href="/listings?category=mountains" class="filter <%= currCategory === 'mountains' ? 'active' : '' %>">
           <div><i class="fa-solid fa-mountain"></i></div>
           <p>Mountains</p>
         </a>
-        <a href="/listings?category=castles&page=1" class="filter <%= currCategory === 'castles' ? 'active' : '' %>">
+        <a href="/listings?category=castles" class="filter <%= currCategory === 'castles' ? 'active' : '' %>">
           <div><i class="fa-brands fa-fort-awesome"></i></div>
           <p>Castles</p>
         </a>
-        <a href="/listings?category=amazing pools&page=1" class="filter <%= currCategory === 'amazing pools' ? 'active' : '' %>">
+        <a href="/listings?category=amazing pools" class="filter <%= currCategory === 'amazing pools' ? 'active' : '' %>">
           <div><i class="fa-solid fa-person-swimming"></i></div>
           <p>Amazing Pools</p>
         </a>
-        <a href="/listings?category=camping&page=1" class="filter <%= currCategory === 'camping' ? 'active' : '' %>">
+        <a href="/listings?category=camping" class="filter <%= currCategory === 'camping' ? 'active' : '' %>">
           <div><i class="fa-solid fa-campground"></i></div>
           <p>Camping</p>
         </a>
-        <a href="/listings?category=farms&page=1" class="filter <%= currCategory === 'farms' ? 'active' : '' %>">
+        <a href="/listings?category=farms" class="filter <%= currCategory === 'farms' ? 'active' : '' %>">
           <div><i class="fa-solid fa-cow"></i></div>
           <p>Farms</p>
         </a>
-        <a href="/listings?category=arctic&page=1" class="filter <%= currCategory === 'arctic' ? 'active' : '' %>">
+        <a href="/listings?category=arctic" class="filter <%= currCategory === 'arctic' ? 'active' : '' %>">
           <div><i class="fa-regular fa-snowflake"></i></div>
           <p>Arctic</p>
         </a>
-        <a href="/listings?category=beachfront&page=1" class="filter <%= currCategory === 'beachfront' ? 'active' : '' %>">
+        <a href="/listings?category=beachfront" class="filter <%= currCategory === 'beachfront' ? 'active' : '' %>">
           <div><i class="fa-solid fa-umbrella-beach"></i></div>
           <p>Beachfront</p>
         </a>
-        <a href="/listings?category=boats&page=1" class="filter <%= currCategory === 'boats' ? 'active' : '' %>">
+        <a href="/listings?category=boats" class="filter <%= currCategory === 'boats' ? 'active' : '' %>">
           <div><i class="fa-solid fa-sailboat"></i></div>
           <p>Boats</p>
         </a>
-        <a href="/listings?category=city&page=1" class="filter <%= currCategory === 'city' ? 'active' : '' %>">
+        <a href="/listings?category=city" class="filter <%= currCategory === 'city' ? 'active' : '' %>">
           <div><i class="fa-solid fa-building"></i></div>
           <p>City</p>
         </a>
-        <a href="/listings?category=luxury&page=1" class="filter <%= currCategory === 'luxury' ? 'active' : '' %>">
+        <a href="/listings?category=luxury" class="filter <%= currCategory === 'luxury' ? 'active' : '' %>">
           <div><i class="fa-regular fa-gem"></i></div>
           <p>Luxury</p>
         </a>
-        <a href="/listings?category=wine yards&page=1" class="filter <%= currCategory === 'wine yards' ? 'active' : '' %>">
+        <a href="/listings?category=wine yards" class="filter <%= currCategory === 'wine yards' ? 'active' : '' %>">
           <div><i class="fa-solid fa-wine-glass"></i></div>
           <p>Wine Yards</p>
         </a>
-        <a href="/listings?category=treehouse&page=1" class="filter <%= currCategory === 'treehouse' ? 'active' : '' %>">
+        <a href="/listings?category=treehouse" class="filter <%= currCategory === 'treehouse' ? 'active' : '' %>">
           <div><i class="fa-solid fa-tree"></i></div>
           <p>Treehouse</p>
         </a>
@@ -74,21 +93,20 @@
       <i class="fa-solid fa-chevron-right"></i>
     </button>
 
-    <div class="tax-toogle d-flex align-items-center gap-3">
+    <div class="tax-toogle">
 
-      <!-- ✅ Price Filter Dropdown -->
+      <!-- Price Filter Dropdown -->
       <div class="dropdown">
-        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
+        <button class="price-filter-btn dropdown-toggle" type="button"
                 id="priceFilterBtn" data-bs-toggle="dropdown" data-bs-auto-close="outside"
                 aria-expanded="false">
           <i class="fa-solid fa-indian-rupee-sign"></i> Price
           <% if (minPrice || maxPrice) { %>
-            <span class="badge bg-danger ms-1">✓</span>
+            <span class="price-active-dot"></span>
           <% } %>
         </button>
         <div class="dropdown-menu p-3" style="min-width: 220px;" aria-labelledby="priceFilterBtn">
           <form action="/listings" method="GET">
-            <!-- Preserve existing filters -->
             <% if (currCategory) { %>
               <input type="hidden" name="category" value="<%= currCategory %>">
             <% } %>
@@ -119,10 +137,10 @@
         </div>
       </div>
 
-      <!-- Existing tax toggle -->
-      <div class="form-check-reverse form-switch">
+      <!-- Tax toggle -->
+      <div class="tax-switch form-switch">
         <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
-        <label class="form-check-label" for="switchCheckDefault"><b>Display total after taxes</b></label>
+        <label for="switchCheckDefault">Total after taxes</label>
       </div>
     </div>
   </div>
@@ -130,7 +148,7 @@
   <!-- Listings Grid -->
   <% if (allListings.length === 0) { %>
     <div class="text-center py-5 w-100">
-      <div class="d-flex justify-content-center mb-3">
+      <div class="mb-3">
         <i class="fa-solid fa-magnifying-glass fa-3x text-muted"></i>
       </div>
       <h4 class="text-muted">No listings found</h4>

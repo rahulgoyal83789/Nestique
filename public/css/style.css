@@ -184,3 +184,127 @@ body{
     padding: 0.375rem 0.5rem;
   }
 }
+
+/* Mobile search bar */
+.mobile-search-bar {
+  padding: 0.6rem 0.5rem 0.4rem;
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+}
+.mobile-search-bar .search-inp {
+  font-size: 0.9rem;
+  padding: 0.45rem 1rem;
+  height: 38px;
+}
+.mobile-search-bar .search-btn {
+  height: 38px;
+  min-width: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.mobile-search-bar .search-btn i {
+  margin: 0;
+}
+
+/* Filter bar bottom row — price + tax toggle */
+.tax-toogle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.25rem;
+  border-top: 1px solid #f0f0f0;
+  margin-top: 0.25rem;
+  flex-wrap: nowrap;
+}
+
+/* Price filter pill button */
+.price-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #222;
+  background: #fff;
+  border: 1.5px solid #d0d0d0;
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  white-space: nowrap;
+}
+
+.price-filter-btn:hover {
+  border-color: #222;
+  box-shadow: none;
+}
+
+.price-filter-btn::after {
+  /* Bootstrap's dropdown caret */
+  margin-left: 2px;
+}
+
+/* Red dot indicator when price filter is active */
+.price-active-dot {
+  width: 7px;
+  height: 7px;
+  background: #fe424d;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* Tax switch label */
+.tax-switch {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.tax-switch .form-check-input {
+  width: 2.2em;
+  height: 1.2em;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.tax-switch label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #444;
+  cursor: pointer;
+  margin: 0;
+}
+
+
+/* Mobile search bar (shown only on small screens, hidden on md+) */
+.mobile-search-bar {
+  padding: 0.6rem 1rem 0.5rem;
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+}
+.mobile-search-bar .search-inp {
+  font-size: 0.9rem;
+  padding: 0.45rem 1rem;
+  height: 38px;
+}
+.mobile-search-bar .search-btn {
+  height: 38px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 25px;
+}
+.mobile-search-bar .search-btn i {
+  margin: 0;
+}
