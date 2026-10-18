@@ -16,7 +16,7 @@ router
 // New Route
 router.get("/new", isLoggedIn("create a listing") ,listingController.renderNewForm);
 
-// 👇 Add this search suggestions route here (MUST be before /:id)
+// search suggestions route (MUST be before /:id)
 router.get("/search-suggestions", wrapAsync(listingController.searchSuggestions));
 
 router.
